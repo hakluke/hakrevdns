@@ -1,8 +1,8 @@
 package main
 
 import (
-    "fmt"
-    "net"
+	"fmt"
+	"net"
 	"sync"
 	"bufio"
 	"os"
@@ -14,7 +14,7 @@ func worker(ip string, wg *sync.WaitGroup) {
 		wg.Done()
 		return
 	}
-    fmt.Println(ip, addr)
+	fmt.Println(ip, addr)
 	wg.Done()
 }
 
