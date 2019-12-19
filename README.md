@@ -2,12 +2,12 @@
 Small, fast, simple tool for performing reverse DNS lookups en masse.
 This can be a useful way of finding domains and subdomains belonging to a company from their IP address.
 
-# installation
+# Installation
 ```
 go get github.com/hakluke/hakrevdns
 ```
 
-# usage
+# Usage
 Pipe a list of IP addresses into the tool, for example:
 
 ```
