@@ -10,7 +10,11 @@ import (
 
 func worker(ip string, wg *sync.WaitGroup) {
 	addr, err := net.LookupAddr(ip)	
-    fmt.Println(ip, addr, err)
+	if err != nil{
+		wg.Done()
+		return
+	}
+    fmt.Println(ip, addr)
 	wg.Done()
 }
 
