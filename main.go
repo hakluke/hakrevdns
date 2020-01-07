@@ -14,7 +14,7 @@ func worker(ip string, wg *sync.WaitGroup) {
 		wg.Done()
 		return
 	}
-	fmt.Println(ip, addr)
+	fmt.Println(ip + "\t" + addr[0])
 	wg.Done()
 }
 
