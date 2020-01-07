@@ -14,17 +14,19 @@ go get github.com/hakluke/hakrevdns
 Pipe a list of IP addresses into the tool, for example:
 
 ```
-hakluke@home:/tmp$ prips 172.217.167.0/24 > ips.txt
-hakluke@home:/tmp$ cat ips.txt | hakrevdns 
-172.217.167.97 [syd09s17-in-f1.1e100.net.]
-172.217.167.109 [syd09s17-in-f13.1e100.net.]
-172.217.167.98 [syd09s17-in-f2.1e100.net.]
-172.217.167.110 [syd09s17-in-f14.1e100.net.]
-172.217.167.77 [syd15s06-in-f13.1e100.net.]
-172.217.167.99 [syd09s17-in-f3.1e100.net.]
-172.217.167.100 [syd09s17-in-f4.1e100.net.]
-172.217.167.115 [syd09s17-in-f19.1e100.net.]
-172.217.167.116 [syd09s17-in-f20.1e100.net.]
-172.217.167.111 [syd09s17-in-f15.1e100.net.]
-.... etc
+hakluke~$ prips 173.0.84.0/24 | hakrevdns 
+173.0.84.110	he.paypal.com.
+173.0.84.109	twofasapi.paypal.com.
+173.0.84.114	www-carrier.paypal.com.
+173.0.84.77	twofasapi.paypal.com.
+173.0.84.102	pointofsale.paypal.com.
+173.0.84.104	slc-a-origin-pointofsale.paypal.com.
+173.0.84.111	smsapi.paypal.com.
+173.0.84.203	m.paypal.com.
+173.0.84.105	prm.paypal.com.
+173.0.84.113	mpltapi.paypal.com.
+173.0.84.8	ipnpb.paypal.com.
+173.0.84.2	active-www.paypal.com.
+173.0.84.4	securepayments.paypal.com.
+...
 ```
