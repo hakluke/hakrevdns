@@ -1,32 +1,45 @@
 package main
 
 import (
-	"fmt"
-	"net"
-	"sync"
-	"bufio"
-	"os"
+    "bufio"
+    "fmt"
+    "net"
+    "os"
+    "sync"
 )
 
-func worker(ip string, wg *sync.WaitGroup) {
-	addr, err := net.LookupAddr(ip)	
-	if err != nil{
-		wg.Done()
-		return
-	}
-	fmt.Println(ip + "\t" + addr[0])
-	wg.Done()
+func worker(ip string, wg *sync.WaitGroup, res chan string) {
+    defer wg.Done()
+
+    addr, err := net.LookupAddr(ip)
+    if err != nil {
+        return
+    }
+
+    for _, a := range addr {
+        res <- fmt.Sprintf("%s \t %s", ip, a)
+    }
 }
 
 func main() {
-	scanner := bufio.NewScanner(os.Stdin)
-	var wg sync.WaitGroup
-	for scanner.Scan() {
-		go worker(scanner.Text(), &wg)
-		wg.Add(1)
-	}
-	if err := scanner.Err(); err != nil {
-		fmt.Println(err)
-	}
-	wg.Wait()
+    var wg sync.WaitGroup
+    res := make(chan string)
+
+    scanner := bufio.NewScanner(os.Stdin)
+    for scanner.Scan() {
+        wg.Add(1)
+        go worker(scanner.Text(), &wg, res)
+    }
+    if err := scanner.Err(); err != nil {
+        fmt.Fprintln(os.Stderr, err)
+    }
+
+    go func() {
+        wg.Wait()
+        close(res)
+    }()
+
+    for r := range res {
+        fmt.Println(r)
+    }
 }
