@@ -17,7 +17,7 @@ var opts struct {
 	Port       uint16 `short:"p" long:"port" default:"53" description:"Port to bother the specified DNS resolver on"`
 }
 
-func worker(ip string, wg *sync.WaitGroup) {
+func worker(ip string, wg *sync.WaitGroup, res chan string) {
 	defer wg.Done()
 
 	var r *net.Resolver
@@ -33,8 +33,12 @@ func worker(ip string, wg *sync.WaitGroup) {
 	}
 
 	addr, err := r.LookupAddr(context.Background(), ip)
-	if err == nil {
-		fmt.Printf("%s\t%s\n", ip, addr[0])
+	if err != nil {
+		return
+	}
+
+	for _, a := range addr {
+		res <- fmt.Sprintf("%s \t %s", ip, a)
 	}
 }
 
@@ -44,14 +48,24 @@ func main() {
 		os.Exit(1)
 	}
 
-	scanner := bufio.NewScanner(os.Stdin)
 	var wg sync.WaitGroup
+	res := make(chan string)
+
+	scanner := bufio.NewScanner(os.Stdin)
 	for scanner.Scan() {
-		go worker(scanner.Text(), &wg)
 		wg.Add(1)
+		go worker(scanner.Text(), &wg, res)
 	}
 	if err := scanner.Err(); err != nil {
-		fmt.Println(err)
+		fmt.Fprintln(os.Stderr, err)
 	}
-	wg.Wait()
+
+	go func() {
+		wg.Wait()
+		close(res)
+	}()
+
+	for r := range res {
+		fmt.Println(r)
+	}
 }
