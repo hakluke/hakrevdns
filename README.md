@@ -55,3 +55,7 @@ If you want to use a resolver not specified by you OS, say: 1.1.1.1, try this:
 hakluke~$ echo "173.0.84.110" | hakrevdns -r 1.1.1.1
 173.0.84.110    he.paypal.com.
 ```
+
+## Contributors
+- [hakluke](https://twitter.com/hakluke) wrote the tool
+- [alphakilo](https://github.com/Alphakilo/) added the option to use custom resolvers
