@@ -11,6 +11,16 @@ This can be a useful way of finding domains and subdomains belonging to a compan
 ```sh
 go get github.com/hakluke/hakrevdns
 ```
+### Alternative Installation 
+
+**Automated installation script that -**
+ - Installs latest compatible version of golang if you don't already
+ - Builds, and places the build binary in ```/usr/bin```
+ 
+```sh
+chmod +x install.sh
+./install.sh
+```
 
 ## Usage
 Pipe a list of IP addresses into the tool, for example:
