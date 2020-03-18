@@ -5,18 +5,18 @@
 if [ -z $GOPATH ]
 then
   echo -e "\e[32m Installing golang \e[0m"
-  wget https://dl.google.com/go/go1.14.src.tar.gz && tar -C /usr/local -xzf go1.14.src.tar.gz
+  wget https://dl.google.com/go/go1.14.src.tar.gz && sudo tar -C /usr/local -xzf go1.14.src.tar.gz
   echo "export PATH=$PATH:/usr/local/go/bin:$GOPATH/bin" >> ~/.bashrc && source ~/.bashrc
   echo -e "\e[32m Installed golang. Test it out by running \"go version\" \e[0m"
 fi
 
 echo -e "\e[32m Building hakrevdns \e[0m"
-go build && mv hakrevdns /usr/local
+go build && sudo mv hakrevdns /usr/local/bin
 
-if [ -e /usr/bin/hakrevdns ]
+if [ -e /usr/local/bin/hakrevdns ]
 then
   echo -e "\e[31mhakrevdns \e[32m has been successfully installed\e[0m"
-  echo -e "\e[32m Test it out by trying, echo "173.0.84.110" | hakrevdns \e[0m"
+  echo -e "\e[32mTest it out by trying, echo "173.0.84.110" | hakrevdns \e[0m"
 fi
 
 
