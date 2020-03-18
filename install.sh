@@ -4,10 +4,13 @@
 
 if [ -z $GOPATH ]
 then
+  echo -e "\e[32m Installing golang \e[0m"
   wget https://dl.google.com/go/go1.14.src.tar.gz && tar -C /usr/local -xzf go1.14.src.tar.gz
   echo "export PATH=$PATH:/usr/local/go/bin:$GOPATH/bin" >> ~/.bashrc && source ~/.bashrc
+  echo -e "\e[32m Installed golang. Test it out by running \"go version\" \e[0m"
 fi
 
+echo -e "\e[32m Building hakrevdns \e[0m"
 go build && mv hakrevdns /usr/local
 
 if [ -e /usr/bin/hakrevdns ]
