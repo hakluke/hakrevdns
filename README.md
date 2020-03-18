@@ -9,7 +9,7 @@ This can be a useful way of finding domains and subdomains belonging to a compan
 ## Installation
 
 ```sh
-go get github.com/hakluke/hakrevdns
+go get github.com/hackerpain/hakrevdns
 ```
 
 ### Alternative Installation using automated install script (Linux)
