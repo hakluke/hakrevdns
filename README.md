@@ -12,6 +12,18 @@ This can be a useful way of finding domains and subdomains belonging to a compan
 go get github.com/hakluke/hakrevdns
 ```
 
+### Alternative Installation using automated install script (Linux)
+
+#### Note: Requires ```wget``` in order to download the golang tarball
+
+  - Installs compatible version of golang
+  - Builds hakrevdns and places the binary in ```/usr/bin```
+  
+```sh
+chmod +x install.sh
+./install.sh
+```
+
 ## Usage
 Pipe a list of IP addresses into the tool, for example:
 
@@ -44,6 +56,7 @@ Application Options:
   -r, --resolver=          IP of the DNS resolver to use for lookups
   -P, --protocol=[tcp|udp] Protocol to use for lookups (default: udp)
   -p, --port=              Port to bother the specified DNS resolver on (default: 53)
+  -d, --domain             Output only domains
 
 Help Options:
   -h, --help               Show this help message
@@ -54,6 +67,17 @@ If you want to use a resolver not specified by you OS, say: 1.1.1.1, try this:
 ```sh
 hakluke~$ echo "173.0.84.110" | hakrevdns -r 1.1.1.1
 173.0.84.110    he.paypal.com.
+```
+
+If you wish to obtain only a list of domains, perhaps to sort out working ones you may use:
+
+```sh
+$ echo "173.0.84.110" | hakrevdns -d
+```
+For filtering out only working domains, you may additionally pipe it through [httprobe](https://github.com/tomnomnom/httprobe):
+
+```sh
+$ echo "173.0.84.110" | hakrevdns -d | httprobe
 ```
 
 ## Contributors
