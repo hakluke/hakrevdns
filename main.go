@@ -7,6 +7,7 @@ import (
 	"net"
 	"os"
 	"sync"
+	"strings"
 
 	flags "github.com/jessevdk/go-flags"
 )
@@ -15,6 +16,7 @@ var opts struct {
 	ResolverIP string `short:"r" long:"resolver" description:"IP of the DNS resolver to use for lookups"`
 	Protocol   string `short:"P" long:"protocol" choice:"tcp" choice:"udp" default:"udp" description:"Protocol to use for lookups"`
 	Port       uint16 `short:"p" long:"port" default:"53" description:"Port to bother the specified DNS resolver on"`
+	Domain 	   bool   `short:"d" long:"domain" description:"Output only domains"`
 }
 
 func worker(ip string, wg *sync.WaitGroup, res chan string) {
@@ -38,7 +40,11 @@ func worker(ip string, wg *sync.WaitGroup, res chan string) {
 	}
 
 	for _, a := range addr {
-		res <- fmt.Sprintf("%s \t %s", ip, a)
+		if opts.Domain {
+			res <- fmt.Sprintf("%s", strings.TrimRight(a, "."))
+		} else {
+			res <- fmt.Sprintf("%s \t %s", ip, a)
+		}
 	}
 }
 
