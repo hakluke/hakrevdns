@@ -17,7 +17,7 @@ go get github.com/hakluke/hakrevdns
 #### Note: Requires ```wget``` in order to download the golang tarball
 
   - Installs compatible version of golang
-  - Builds hakrevdns and places the binary in ```/usr/bin```
+  - Builds hakrevdns and places the binary in ```/usr/local/bin```
   
 ```sh
 chmod +x install.sh
