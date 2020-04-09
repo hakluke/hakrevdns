@@ -8,8 +8,8 @@ Just a little bit extended hakrevdns by [hakluke](https://twitter.com/hakluke)
 More Information about the tool
 https://github.com/hakluke/hakrevdns
 
-#### Extensions
-Added -R option for quick domain parsing/probing
+## Changes
+`Added -R option for quick domain parsing/probing`
 
 You feed it IP addresses, it returns hostnames.
 
