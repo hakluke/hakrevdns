@@ -2,6 +2,15 @@
 
 Small, fast, simple tool for performing reverse DNS lookups en masse.
 
+## Update
+Just a little bit extended hakrevdns by [hakluke](https://twitter.com/hakluke)
+
+More Information about the tool
+https://github.com/hakluke/hakrevdns
+
+#### Extensions
+Added -R option for quick domain parsing/probing
+
 You feed it IP addresses, it returns hostnames.
 
 This can be a useful way of finding domains and subdomains belonging to a company from their IP addresses.
