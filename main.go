@@ -1,71 +1,71 @@
 package main
 
 import (
-	"bufio"
-	"context"
-	"fmt"
-	"net"
-	"os"
-	"sync"
-
-	flags "github.com/jessevdk/go-flags"
+    "bufio"
+    "context"
+    flags "github.com/jessevdk/go-flags"
+    "fmt"
+    "net"
+    "sync"
+    "os"
 )
 
 var opts struct {
-	ResolverIP string `short:"r" long:"resolver" description:"IP of the DNS resolver to use for lookups"`
-	Protocol   string `short:"P" long:"protocol" choice:"tcp" choice:"udp" default:"udp" description:"Protocol to use for lookups"`
-	Port       uint16 `short:"p" long:"port" default:"53" description:"Port to bother the specified DNS resolver on"`
-}
-
-func worker(ip string, wg *sync.WaitGroup, res chan string) {
-	defer wg.Done()
-
-	var r *net.Resolver
-
-	if opts.ResolverIP != "" {
-		r = &net.Resolver{
-			PreferGo: true,
-			Dial: func(ctx context.Context, network, address string) (net.Conn, error) {
-				d := net.Dialer{}
-				return d.DialContext(ctx, opts.Protocol, fmt.Sprintf("%s:%d", opts.ResolverIP, opts.Port))
-			},
-		}
-	}
-
-	addr, err := r.LookupAddr(context.Background(), ip)
-	if err != nil {
-		return
-	}
-
-	for _, a := range addr {
-		res <- fmt.Sprintf("%s \t %s", ip, a)
-	}
+        Threads int `short:"t" long:"threads" default:"8" description:"How many threads should be used"`
+        ResolverIP string `short:"r" long:"resolver" description:"IP of the DNS resolver to use for lookups"`
+        Protocol   string `short:"P" long:"protocol" choice:"tcp" choice:"udp" default:"udp" description:"Protocol to use for lookups"`
+        Port       uint16 `short:"p" long:"port" default:"53" description:"Port to bother the specified DNS resolver on"`
 }
 
 func main() {
-	_, err := flags.ParseArgs(&opts, os.Args)
-	if err != nil {
-		os.Exit(1)
-	}
+        _, err := flags.ParseArgs(&opts, os.Args)
+        if err != nil{
+            os.Exit(1)
+        }
 
-	var wg sync.WaitGroup
-	res := make(chan string)
+        // default of 8 threads
+        numWorkers := opts.Threads
 
-	scanner := bufio.NewScanner(os.Stdin)
-	for scanner.Scan() {
-		wg.Add(1)
-		go worker(scanner.Text(), &wg, res)
-	}
-	if err := scanner.Err(); err != nil {
-		fmt.Fprintln(os.Stderr, err)
-	}
+        work := make(chan string)
+        go func() {
+            s := bufio.NewScanner(os.Stdin)
+            for s.Scan() {
+                work <- s.Text()
+            }
+            close(work)
+        }()
 
-	go func() {
-		wg.Wait()
-		close(res)
-	}()
+        wg := &sync.WaitGroup{}
 
-	for r := range res {
-		fmt.Println(r)
-	}
+        for i := 0; i < numWorkers; i++ {
+            wg.Add(1)
+            go doWork(work, wg)
+        }
+        wg.Wait()
+}
+
+func doWork(work chan string, wg *sync.WaitGroup) {
+    for ip := range work {
+        var r *net.Resolver
+
+        if opts.ResolverIP != "" {
+                r = &net.Resolver{
+                        PreferGo: true,
+                        Dial: func(ctx context.Context, network, address string) (net.Conn, error) {
+                                d := net.Dialer{}
+                                return d.DialContext(ctx, opts.Protocol, fmt.Sprintf("%s:%d", opts.ResolverIP, opts.Port))
+                        },
+                }
+        }
+
+        addr, err := r.LookupAddr(context.Background(), ip)
+        if err != nil {
+                return
+        }
+
+        for _, a := range addr {
+                fmt.Println(ip, "\t",a)
+        }
+    }
+    wg.Done()
 }
