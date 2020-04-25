@@ -45,19 +45,19 @@ func main() {
 }
 
 func doWork(work chan string, wg *sync.WaitGroup) {
+    var r *net.Resolver
+
+    if opts.ResolverIP != "" {
+            r = &net.Resolver{
+                    PreferGo: true,
+                    Dial: func(ctx context.Context, network, address string) (net.Conn, error) {
+                            d := net.Dialer{}
+                            return d.DialContext(ctx, opts.Protocol, fmt.Sprintf("%s:%d", opts.ResolverIP, opts.Port))
+                    },
+            }
+    }
+
     for ip := range work {
-        var r *net.Resolver
-
-        if opts.ResolverIP != "" {
-                r = &net.Resolver{
-                        PreferGo: true,
-                        Dial: func(ctx context.Context, network, address string) (net.Conn, error) {
-                                d := net.Dialer{}
-                                return d.DialContext(ctx, opts.Protocol, fmt.Sprintf("%s:%d", opts.ResolverIP, opts.Port))
-                        },
-                }
-        }
-
         addr, err := r.LookupAddr(context.Background(), ip)
         if err != nil {
                 return
