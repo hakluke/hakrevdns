@@ -45,6 +45,7 @@ func main() {
 }
 
 func doWork(work chan string, wg *sync.WaitGroup) {
+    defer wg.Done()
     var r *net.Resolver
 
     if opts.ResolverIP != "" {
@@ -60,12 +61,11 @@ func doWork(work chan string, wg *sync.WaitGroup) {
     for ip := range work {
         addr, err := r.LookupAddr(context.Background(), ip)
         if err != nil {
-                return
+                continue
         }
 
         for _, a := range addr {
                 fmt.Println(ip, "\t",a)
         }
     }
-    wg.Done()
 }
