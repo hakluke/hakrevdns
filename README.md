@@ -25,7 +25,7 @@ chmod +x install.sh
 ```
 
 ## Usage
-Pipe a list of IP addresses into the tool, for example:
+The most basic usage is to simply pipe a list of IP addresses into the tool, for example:
 
 ```sh
 hakluke~$ prips 173.0.84.0/24 | hakrevdns 
@@ -53,6 +53,7 @@ Usage:
   hakrevdns [OPTIONS]
 
 Application Options:
+  -t, --threads=           Number of threads (too many may get you banned, too few will be slow)
   -r, --resolver=          IP of the DNS resolver to use for lookups
   -P, --protocol=[tcp|udp] Protocol to use for lookups (default: udp)
   -p, --port=              Port to bother the specified DNS resolver on (default: 53)
