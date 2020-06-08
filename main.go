@@ -7,6 +7,7 @@ import (
     "fmt"
     "net"
     "sync"
+    "strings"
     "os"
 )
 
@@ -15,6 +16,7 @@ var opts struct {
         ResolverIP string `short:"r" long:"resolver" description:"IP of the DNS resolver to use for lookups"`
         Protocol   string `short:"P" long:"protocol" choice:"tcp" choice:"udp" default:"udp" description:"Protocol to use for lookups"`
         Port       uint16 `short:"p" long:"port" default:"53" description:"Port to bother the specified DNS resolver on"`
+	Domain     bool   `short:"d" long:"domain" description:"Output only domains"`
 }
 
 func main() {
@@ -65,7 +67,11 @@ func doWork(work chan string, wg *sync.WaitGroup) {
         }
 
         for _, a := range addr {
-                fmt.Println(ip, "\t",a)
+		if opts.Domain {
+			fmt.Println(strings.TrimRight(a, "."))
+		} else {
+                	fmt.Println(ip, "\t",a)
+		}
         }
     }
 }
