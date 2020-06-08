@@ -84,3 +84,4 @@ $ echo "173.0.84.110" | hakrevdns -d | httprobe
 ## Contributors
 - [hakluke](https://twitter.com/hakluke) wrote the tool
 - [alphakilo](https://github.com/Alphakilo/) added the option to use custom resolvers
+- [SaveBreach](https://twitter.com/SaveBreach/) added the -d flag and cleaned up the code
