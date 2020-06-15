@@ -70,7 +70,7 @@ func doWork(work chan string, wg *sync.WaitGroup) {
 		if opts.Domain {
 			fmt.Println(strings.TrimRight(a, "."))
 		} else {
-                	fmt.Println(ip, "\t",a)
+                	fmt.Println(ip, "\t", strings.TrimRight(a, "."))
 		}
         }
     }
