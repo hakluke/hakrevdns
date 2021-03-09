@@ -48,7 +48,7 @@ func main() {
 }
 
 func getResolvers() []*net.Resolver {
-	resolvers := make([]*net.Resolver, 1)
+	resolvers := make([]*net.Resolver, 0)
 	var r *net.Resolver
 
 	if opts.ResolverIP != "" {
@@ -75,7 +75,9 @@ func getResolvers() []*net.Resolver {
 
 			resolvers = append(resolvers, resolver)
 		}
-	} else {
+	}
+
+	if len(resolvers) == 0 {
 		resolvers = append(resolvers, r)
 	}
 
