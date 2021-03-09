@@ -59,8 +59,6 @@ func getResolvers() []*net.Resolver {
 				return d.DialContext(ctx, opts.Protocol, fmt.Sprintf("%s:%d", opts.ResolverIP, opts.Port))
 			},
 		}
-
-		resolvers = append(resolvers, r)
 	} else if opts.ResolverIPs != "" {
 		ips := strings.Split(opts.ResolverIPs, ",")
 
