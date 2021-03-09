@@ -12,11 +12,12 @@ import (
 )
 
 var opts struct {
-	Threads    int    `short:"t" long:"threads" default:"8" description:"How many threads should be used"`
-	ResolverIP string `short:"r" long:"resolver" description:"IP of the DNS resolver to use for lookups"`
-	Protocol   string `short:"P" long:"protocol" choice:"tcp" choice:"udp" default:"udp" description:"Protocol to use for lookups"`
-	Port       uint16 `short:"p" long:"port" default:"53" description:"Port to bother the specified DNS resolver on"`
-	Domain     bool   `short:"d" long:"domain" description:"Output only domains"`
+	Threads     int    `short:"t" long:"threads" default:"8" description:"How many threads should be used"`
+	ResolverIP  string `short:"r" long:"resolver" description:"IP of the DNS resolver to use for lookups"`
+	ResolverIPs string `short:"l" long:"resolvers" description:"IPs of the DNS resolvers to use for lookups, comma delimited"`
+	Protocol    string `short:"P" long:"protocol" choice:"tcp" choice:"udp" default:"udp" description:"Protocol to use for lookups"`
+	Port        uint16 `short:"p" long:"port" default:"53" description:"Port to bother the specified DNS resolver on"`
+	Domain      bool   `short:"d" long:"domain" description:"Output only domains"`
 }
 
 func main() {
@@ -46,8 +47,7 @@ func main() {
 	wg.Wait()
 }
 
-func doWork(work chan string, wg *sync.WaitGroup) {
-	defer wg.Done()
+func getResolvers() []*net.Resolver {
 	resolvers := make([]*net.Resolver, 1)
 	var r *net.Resolver
 
@@ -59,9 +59,32 @@ func doWork(work chan string, wg *sync.WaitGroup) {
 				return d.DialContext(ctx, opts.Protocol, fmt.Sprintf("%s:%d", opts.ResolverIP, opts.Port))
 			},
 		}
+
+		resolvers = append(resolvers, r)
+	} else if opts.ResolverIPs != "" {
+		ips := strings.Split(opts.ResolverIPs, ",")
+
+		for _, ip := range ips {
+			resolver := &net.Resolver{
+				PreferGo: true,
+				Dial: func(ctx context.Context, network, address string) (net.Conn, error) {
+					d := net.Dialer{}
+					return d.DialContext(ctx, opts.Protocol, fmt.Sprintf("%s:%d", ip, opts.Port))
+				},
+			}
+
+			resolvers = append(resolvers, resolver)
+		}
+	} else {
+		resolvers = append(resolvers, r)
 	}
 
-	resolvers = append(resolvers, r)
+	return resolvers
+}
+
+func doWork(work chan string, wg *sync.WaitGroup) {
+	defer wg.Done()
+	resolvers := getResolvers()
 
 	for ip := range work {
 		for _, r := range resolvers {
