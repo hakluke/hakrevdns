@@ -58,13 +58,13 @@ hakluke~$ echo "173.0.84.110" | hakrevdns -r 1.1.1.1
 173.0.84.110    he.paypal.com.
 ```
 
-If you wish to obtain only a list of domains, perhaps to sort out working ones you may use:
+If you wish to obtain only a list of domains without IP addresses, you can use `-d`:
 
 ```sh
 $ echo "173.0.84.110" | hakrevdns -d
 ```
-For filtering out only working domains, you may additionally pipe it through [httprobe](https://github.com/tomnomnom/httprobe):
 
+This tool is designed to be easily piped into other tools, for example:
 ```sh
 $ echo "173.0.84.110" | hakrevdns -d | httprobe
 ```
