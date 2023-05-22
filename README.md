@@ -51,7 +51,7 @@ Help Options:
   -h, --help               Show this help message
 ```
 
-If you want to use a resolver not specified by you OS, say: 1.1.1.1, try this:
+If you want to use a resolver not specified by your OS, say: 1.1.1.1, try this:
 
 ```sh
 hakluke~$ echo "173.0.84.110" | hakrevdns -r 1.1.1.1
