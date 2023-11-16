@@ -68,7 +68,7 @@ func doWork(work chan string, wg *sync.WaitGroup) {
 
         for _, a := range addr {
 		if opts.Domain {
-			fmt.Println(strings.TrimRight(a, "."))
+			fmt.Println(strings.TrimRight(a, ""))
 		} else {
                 	fmt.Println(ip, "\t",a)
 		}
