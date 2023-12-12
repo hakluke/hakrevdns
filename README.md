@@ -58,6 +58,14 @@ hakluke~$ echo "173.0.84.110" | hakrevdns -r 1.1.1.1
 173.0.84.110    he.paypal.com.
 ```
 
+If you want to use a list of resolvers, try this:
+
+```sh
+hakluke~$ echo "173.0.84.110" | hakrevdns -f resolvers.txt
+173.0.84.110    he.paypal.com.
+```
+
+
 If you wish to obtain only a list of domains without IP addresses, you can use `-d`:
 
 ```sh
@@ -73,3 +81,4 @@ $ echo "173.0.84.110" | hakrevdns -d | httprobe
 - [hakluke](https://twitter.com/hakluke) wrote the tool
 - [alphakilo](https://github.com/Alphakilo/) added the option to use custom resolvers
 - [SaveBreach](https://twitter.com/SaveBreach/) added the -d flag and cleaned up the code
+- [e1abrador](https://github.com/e1abrador) added -f flag to use a list of resolvers.
