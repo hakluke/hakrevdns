@@ -86,4 +86,10 @@ $ echo "173.0.84.110" | hakrevdns -d | httprobe
 
 ---
 
-Built by [hakluke](https://hakluke.com). I write about hacking and the security industry at [hakluke.com](https://hakluke.com), and I run [HackerContent](https://hackercontent.com), a content marketing agency for cybersecurity companies.
+Built by [hakluke](https://hakluke.com) (Luke Stephens), founder and CEO of [Haksec](https://haksec.io), a group of cybersecurity companies:
+
+- [HackerContent](https://hackercontent.com) — content marketing and social media for cybersecurity companies
+- [Ironbark Cyber](https://ironbarkcyber.com) — cybersecurity consultancy for penetration testing, social engineering and OSINT
+- [TRIAGERS™](https://triagers.com) — outsourced bug bounty and vulnerability disclosure (VDP) triage
+
+I write about hacking and the security industry at [hakluke.com](https://hakluke.com).
